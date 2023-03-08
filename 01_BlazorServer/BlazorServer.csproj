@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <UserSecretsId>aspnet-BlazorServer-567aa1ab-0a9d-419d-adbf-94ce7b0429f6</UserSecretsId>
+    <UserSecretsId>90c98222-83f6-469e-b0cc-5bffb376ae1e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
