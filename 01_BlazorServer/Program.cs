@@ -22,6 +22,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
+builder.Services.AddHttpClient("TestHttpClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:2001/");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

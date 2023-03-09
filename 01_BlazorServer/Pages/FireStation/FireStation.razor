@@ -1,0 +1,133 @@
+@inject IHttpClientFactory httpClientFactory
+@using DataLib.DTOs
+@using System.Net.Http.Json
+
+@page "/firestation"
+
+<h3>Fire Station Overview</h3>
+<br />
+<h5>Pick Fire Station:</h5>
+<br />
+<br />
+
+@*--- Drop Down ---*@
+<select class="btn btn-secondary dropdown-toggle" @onchange="OnSelectStation">
+    @if (selectedStation is null)
+    {
+        <option value="">Select Station...</option>
+    }
+
+    @foreach (var station in FireStationList)
+    {
+        <option value=@station>@station</option>
+    }
+</select>
+@*--- Drop Down ---*@
+
+<br />
+
+@*--- Test ---*@
+@if (testModel is null)
+{
+    <p>No Model...</p>
+}
+else
+{
+    <p>@testModel.TestString</p>
+}
+@*--- Test ---*@
+
+@*--- Tabelle ---*@
+<h5>All Tracks</h5>
+@if (TestList.Count <= 0)
+{
+    <p>Loading TestList...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Tag
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var test in TestList)
+            {
+                <tr>
+                    <td>
+                        @test
+                    </td>
+                    <td>
+                        @test
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary"
+                            @onclick=IncrementCount>
+                            Play
+                        </a>
+                        <a class="btn btn-sm btn-danger" 
+                            @onclick=IncrementCount>
+                            Play
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@*--- Tabelle ---*@
+
+<br />
+
+
+
+@*==============================================================================================*@
+@code {
+
+    List<string> TestList = new List<string> { "TestString01", "TestString02", "TestString03" };
+
+    string? selectedStation;
+    TestModelDto? testModel;
+    List<string> FireStationList = new List<string> { "Station North", "Station East" };
+ 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    // On FireStation DropDown selected
+    private async Task OnSelectStation(ChangeEventArgs e)
+    {
+        selectedStation = e is null ? "No Station available..." : e.ToString();
+        await GetApiData();
+    }
+
+    private async Task GetApiData()
+    {
+        testModel = new TestModelDto();
+
+        var httpClient = httpClientFactory.CreateClient("TestHttpClient");
+        var response = await httpClient.GetAsync("test/2");
+
+        if (response.IsSuccessStatusCode)
+        {
+            testModel = await response.Content.ReadFromJsonAsync<TestModelDto>();
+        }
+    }
+
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+
+}
