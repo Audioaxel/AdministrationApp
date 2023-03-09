@@ -356,3 +356,5 @@ MigrationBackup/
 **/bin/
 **/obj/
 **/secrets.json
+*.db-shm
+*.db-wal
