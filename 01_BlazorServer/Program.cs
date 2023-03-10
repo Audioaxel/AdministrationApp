@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.Hosting;
+using SignalRLib.Module;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +23,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
+// ======================== My Stuff ===================================
+// Http Request
 builder.Services.AddHttpClient("TestHttpClient", client =>
 {
     client.BaseAddress = new Uri("http://localhost:2001/");
 });
 
+// SignalR
+builder.Services.RegisterSignalRLibServices();
+
+// ======================== My Stuff ===================================
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +55,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+
+// SignalR
+app.MapGet("/hub", () => {return "test";} );
+app.ConfigureSignalRLib();
 
 app.MapControllers();
 app.MapBlazorHub();

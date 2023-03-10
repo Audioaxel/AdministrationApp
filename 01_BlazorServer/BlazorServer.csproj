@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../10_DataLib/DataLib.csproj" />
+    <ProjectReference Include="../11_SignalRLib/SignalRLib.csproj" />
   </ItemGroup>
   
 
